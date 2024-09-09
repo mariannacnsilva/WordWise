@@ -1,0 +1,102 @@
+<div class="card bg-white principal p-4">
+  <h3 class="mt-4">Fale mais sobre você</h3>
+  <form (submit)="sendQuestions($event)" class="formulario">
+
+    <div *ngIf="isQuestionVisible(0)" class="m-3">
+      <div class="form-group mt-4 formulario">
+        <label for="name">Qual seu nome?</label>
+        <input type="text" id="name" class="form-control" style="width: 400px">
+      </div>
+
+      <div class="formulario mt-4">
+        <button class="btn" style="background-color: #ffa1b7" (click)="showNextQuestion()">Próxima</button>
+      </div>
+    </div>
+
+    <div *ngIf="isQuestionVisible(1)" class="m-3">
+      <div class="form-group mt-3 formulario">
+        <label for="age">Quantos anos você tem?</label>
+        <input type="text" id="age" class="form-control" maxlength="2" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
+      </div>
+
+      <div class="mt-4 questoes">
+        <button class="btn" style="background-color: #ffa1b7" (click)="showPreviousQuestion()">Anterior</button>
+        <button class="btn" style="background-color: #ffa1b7" (click)="showNextQuestion()">Próxima</button>
+      </div>
+    </div>
+
+    <div *ngIf="isQuestionVisible(2)" class="m-3">
+      <div class="form-group mt-4 formulario">
+        <label for="interests">Pelo que você mais se interessa quando está aprendendo inglês?</label>
+        <textarea id="interests" class="form-control" rows="3" placeholder="Futebol, músicas, redes sociais..."></textarea>
+      </div>
+
+      <div class="mt-4 questoes">
+        <button class="btn" style="background-color: #ffa1b7" (click)="showPreviousQuestion()">Anterior</button>
+        <button class="btn" style="background-color: #ffa1b7" (click)="showNextQuestion()">Próxima</button>
+      </div>
+    </div>
+
+    <div *ngIf="isQuestionVisible(3)" class="m-3">
+      <div class="form-group mt-4 formulario">
+        <label>Qual habilidade você deseja aprimorar?</label>
+        <div class="form-check">
+          <input type="radio" id="ability1" name="ability" class="form-check-input" value="Habilidade 1">
+          <label for="ability1" class="form-check-label">Habilidade 1</label>
+        </div>
+        <div class="form-check">
+          <input type="radio" id="ability2" name="ability" class="form-check-input" value="Habilidade 2">
+          <label for="ability2" class="form-check-label">Habilidade 2</label>
+        </div>
+        <div class="form-check">
+          <input type="radio" id="ability3" name="ability" class="form-check-input" value="Habilidade 3">
+          <label for="ability3" class="form-check-label">Habilidade 3</label>
+        </div>
+        <div class="form-check">
+          <input type="radio" id="ability4" name="ability" class="form-check-input" value="Habilidade 4">
+          <label for="ability4" class="form-check-label">Habilidade 4</label>
+        </div>
+        <div class="form-check">
+          <input type="radio" id="ability5" name="ability" class="form-check-input" value="Habilidade 5">
+          <label for="ability5" class="form-check-label">Habilidade 5</label>
+        </div>
+      </div>
+
+      <div class="mt-4 questoes">
+        <button class="btn" style="background-color: #ffa1b7" (click)="showPreviousQuestion()">Anterior</button>
+        <button class="btn" style="background-color: #ffa1b7" (click)="showNextQuestion()">Próxima</button>
+      </div>
+    </div>
+
+    <div *ngIf="isQuestionVisible(4)" class="m-3">
+      <div class="form-group mt-4">
+        <label>Quais habilidades você já possui?</label>
+        <div class="form-check">
+          <input type="checkbox" id="currentAbility1" name="currentAbility" class="form-check-input" value="Habilidade 1">
+          <label for="currentAbility1" class="form-check-label">Habilidade 1</label>
+        </div>
+        <div class="form-check">
+          <input type="checkbox" id="currentAbility2" name="currentAbility" class="form-check-input" value="Habilidade 2">
+          <label for="currentAbility2" class="form-check-label">Habilidade 2</label>
+        </div>
+        <div class="form-check">
+          <input type="checkbox" id="currentAbility3" name="currentAbility" class="form-check-input" value="Habilidade 3">
+          <label for="currentAbility3" class="form-check-label">Habilidade 3</label>
+        </div>
+        <div class="form-check">
+          <input type="checkbox" id="currentAbility4" name="currentAbility" class="form-check-input" value="Habilidade 4">
+          <label for="currentAbility4" class="form-check-label">Habilidade 4</label>
+        </div>
+        <div class="form-check">
+          <input type="checkbox" id="currentAbility5" name="currentAbility" class="form-check-input" value="Habilidade 5">
+          <label for="currentAbility5" class="form-check-label">Habilidade 5</label>
+        </div>
+      </div>
+
+      <div class="mt-4 questoes">
+        <button class="btn" style="background-color: #ffa1b7" (click)="showPreviousQuestion()">Anterior</button>
+        <button class="btn" style="background-color: #ffa1b7" type="submit" (click)="showNextQuestion()">Enviar</button>
+      </div>
+    </div>
+  </form>
+</div>

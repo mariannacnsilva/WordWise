@@ -1,0 +1,14 @@
+<div class="card bg-white principal p-4" *ngIf="isReturnVisible">
+  <h3 class="m-3 mt-4">{{data}}</h3>
+
+  <div class="mt-4 questoes col-sm-6">
+    <button class="btn" style="background-color: #ffa1b7" (click)="returnQuestion()">Próxima pergunta</button>
+    <button class="btn" style="background-color: #ffa1b7" (click)=" finalizar = true; isReturnVisible = false;">Finalizar</button>
+  </div>
+</div>
+
+<div class="card bg-white principal p-4" *ngIf="finalizar">
+  <h3 class="m-3 mt-4">Obrigado!</h3>
+  <h5>Esperamos que sua experiência no WordWise tenha sido positiva! Sua opinião é muito importante para nós, estamos sempre à disposição para melhorar e oferecer o melhor serviço possível.</h5>
+  <h5>Volte sempre!</h5>
+</div>
