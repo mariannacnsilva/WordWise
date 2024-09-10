@@ -1,6 +1,11 @@
 # WordWise
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.2.1.
+This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.2.1, Python version 3.9 with the pipenv dependency manager, Node.js version 18.x or higher with the npm package manager.
+1. pip install pipenv
+2. pipenv install
+3. pip install flask
+4. pip install flask-cors
+5. npm install
 
 ## Development server
 
