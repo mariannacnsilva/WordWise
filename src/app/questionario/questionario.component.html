@@ -1,6 +1,6 @@
 <div class="card bg-white principal p-4">
   <h3 class="mt-4">Fale mais sobre você</h3>
-  <form (submit)="sendQuestions($event)" class="formulario">
+  <form class="formulario">
 
     <div *ngIf="isQuestionVisible(0)" class="m-3">
       <div class="form-group mt-4 formulario">
@@ -9,7 +9,7 @@
       </div>
 
       <div class="formulario mt-4">
-        <button class="btn" style="background-color: #ffa1b7" (click)="showNextQuestion()">Próxima</button>
+        <button class="btn" style="background-color: #ffa1b7" (click)="showNextQuestion($event)">Próxima</button>
       </div>
     </div>
 
@@ -21,7 +21,7 @@
 
       <div class="mt-4 questoes">
         <button class="btn" style="background-color: #ffa1b7" (click)="showPreviousQuestion()">Anterior</button>
-        <button class="btn" style="background-color: #ffa1b7" (click)="showNextQuestion()">Próxima</button>
+        <button class="btn" style="background-color: #ffa1b7" (click)="showNextQuestion($event)">Próxima</button>
       </div>
     </div>
 
@@ -33,7 +33,7 @@
 
       <div class="mt-4 questoes">
         <button class="btn" style="background-color: #ffa1b7" (click)="showPreviousQuestion()">Anterior</button>
-        <button class="btn" style="background-color: #ffa1b7" (click)="showNextQuestion()">Próxima</button>
+        <button class="btn" style="background-color: #ffa1b7" (click)="showNextQuestion($event)">Próxima</button>
       </div>
     </div>
 
@@ -42,29 +42,29 @@
         <label>Qual habilidade você deseja aprimorar?</label>
         <div class="form-check">
           <input type="radio" id="ability1" name="ability" class="form-check-input" value="Habilidade 1">
-          <label for="ability1" class="form-check-label">Habilidade 1</label>
+          <label for="ability1" class="form-check-label">Conversação Casual</label>
         </div>
         <div class="form-check">
           <input type="radio" id="ability2" name="ability" class="form-check-input" value="Habilidade 2">
-          <label for="ability2" class="form-check-label">Habilidade 2</label>
+          <label for="ability2" class="form-check-label">Conversação Formal</label>
         </div>
         <div class="form-check">
           <input type="radio" id="ability3" name="ability" class="form-check-input" value="Habilidade 3">
-          <label for="ability3" class="form-check-label">Habilidade 3</label>
+          <label for="ability3" class="form-check-label">Vocabulário</label>
         </div>
         <div class="form-check">
           <input type="radio" id="ability4" name="ability" class="form-check-input" value="Habilidade 4">
-          <label for="ability4" class="form-check-label">Habilidade 4</label>
+          <label for="ability4" class="form-check-label">Escrita</label>
         </div>
         <div class="form-check">
           <input type="radio" id="ability5" name="ability" class="form-check-input" value="Habilidade 5">
-          <label for="ability5" class="form-check-label">Habilidade 5</label>
+          <label for="ability5" class="form-check-label">Interpretação de Texto</label>
         </div>
       </div>
 
       <div class="mt-4 questoes">
         <button class="btn" style="background-color: #ffa1b7" (click)="showPreviousQuestion()">Anterior</button>
-        <button class="btn" style="background-color: #ffa1b7" (click)="showNextQuestion()">Próxima</button>
+        <button class="btn" style="background-color: #ffa1b7" (click)="showNextQuestion($event)">Próxima</button>
       </div>
     </div>
 
@@ -95,7 +95,7 @@
 
       <div class="mt-4 questoes">
         <button class="btn" style="background-color: #ffa1b7" (click)="showPreviousQuestion()">Anterior</button>
-        <button class="btn" style="background-color: #ffa1b7" type="submit" (click)="showNextQuestion()">Enviar</button>
+        <button class="btn" style="background-color: #ffa1b7" (click)="sendQuestions($event)">Enviar</button>
       </div>
     </div>
   </form>

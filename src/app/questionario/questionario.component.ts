@@ -1,5 +1,5 @@
-import { Component, NgModule } from '@angular/core';
-import { Router, RouterModule, Routes } from "@angular/router";
+import {Component} from '@angular/core';
+import {Router} from "@angular/router";
 import axios from "axios";
 import {NgIf} from "@angular/common";
 
@@ -14,12 +14,29 @@ import {NgIf} from "@angular/common";
 })
 export class QuestionarioComponent {
   currentQuestionIndex: number = 0;
-  totalQuestions: number = 6;
+  totalQuestions: number = 5;
+  name: string | undefined;
+  age: string | undefined;
+  interests: string | undefined;
+  ability: string | undefined;
+  currentAbilities: string[] = [];
 
   constructor(private router: Router) { }
 
-  showNextQuestion(): void {
+  showNextQuestion(event: Event): void {
+    event.preventDefault(); // Evita o comportamento padrão do botão
+
+    const form = (event.target as HTMLElement).closest('form');
+
     if (this.currentQuestionIndex < this.totalQuestions - 1) {
+      if (this.currentQuestionIndex === 0) this.name = form?.querySelector<HTMLInputElement>('#name')?.value || '';
+      if (this.currentQuestionIndex === 1) this.age = form?.querySelector<HTMLInputElement>('#age')?.value || '';
+      if (this.currentQuestionIndex === 2) this.interests = form?.querySelector<HTMLTextAreaElement>('#interests')?.value || '';
+      if (this.currentQuestionIndex === 3) this.ability = form?.querySelector<HTMLInputElement>('input[name="ability"]:checked')?.value || '';
+      if (this.currentQuestionIndex === 4) this.currentAbilities = Array.from(
+        form?.querySelectorAll<HTMLInputElement>('input[name="currentAbility"]:checked') || []
+      ).map(el => el.value);
+
       this.currentQuestionIndex++;
     }
   }
@@ -38,20 +55,13 @@ export class QuestionarioComponent {
     event.preventDefault(); // Evita o recarregamento da página
 
     if (this.currentQuestionIndex === this.totalQuestions - 1 ) {
-      const name = (event.target as HTMLFormElement).querySelector<HTMLInputElement>('#name')?.value;
-      const age = (event.target as HTMLFormElement).querySelector<HTMLInputElement>('#age')?.value;
-      const interests = (event.target as HTMLFormElement).querySelector<HTMLInputElement>('#interests')?.value;
-      const ability = (event.target as HTMLFormElement).querySelector<HTMLInputElement>('input[name="ability"]:checked')?.value;
-      const currentAbilities = Array.from(
-        (event.target as HTMLFormElement).querySelectorAll<HTMLInputElement>('input[name="currentAbility"]:checked')
-      ).map(el => el.value);
 
       const respostas = {
-        name: name,
-        age: age,
-        interests: interests,
-        ability: ability,
-        currentAbilities: currentAbilities
+        name: this.name,
+        age: this.age,
+        interests: this.interests,
+        ability: this.ability,
+        currentAbilities: this.currentAbilities
       }
 
       axios.post('http://127.0.0.1:5000/enviar-questionario', { respostas })
