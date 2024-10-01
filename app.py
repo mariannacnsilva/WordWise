@@ -1,23 +1,34 @@
 from flask import Flask, jsonify, request
+import requests, os
 from flask_cors import CORS
 
 app = Flask(__name__)
 CORS (app)
 
+class Aluno:
+  def __init__(self, nome: str, idade: str, interesses: str, habilidade: str, habilidades_atuais: list) -> None:
+    self.nome: str = nome
+    self.idade: str = idade
+    self.interesses: str = interesses
+    self.habilidade: str = habilidade
+    self.habilidades_atuais: list = habilidades_atuais
+
 @app.route('/')
 def index():
   return "Backend is running!"
 
-@app.route('/api/data', methods=['GET'])
-def get_data():
-  data = {"message": "Dados recebidos com sucesso!"}
-  return jsonify(data)
-
 @app.route('/enviar-questionario', methods=['POST'])
 def post_questionario():
   data = request.json
+  '''res = data.get('respostas', [])
 
-  #respostas = data.get('respostas', [])
+  aluno = Aluno(res['name'], res['age'], res['interests'], res['ability'], res['currentAbilities'])
+  prompt = f'Imagine que você é um professor de inglês e escreverá uma questão para um alunx que se chama {aluno.nome}, de {aluno.age} anos, que se interessa por {aluno.interests}, deseja focar em aprender {aluno.ability} e já domina {aluno.currentAbilities}.'
+
+  LIGAR COM GPT e passar o prompt
+
+  response = {'question': 'retorno do gpt'}
+
   respostas = {
     "titleText": "Exploring the World Through Travel and Conversation.",
     "text": ("Traveling is one of the most enriching experiences you can have. At 25, you’ve likely already seen "
@@ -37,17 +48,46 @@ def post_questionario():
              "mastering the language. With your passion for travel, each new interaction will not only enhance your"
              " language skills but also deepen your understanding of the world."),
     "question": "Why is enhancing conversation skills important for someone who enjoys traveling?"
-  }
-  response = {"respostas": respostas}
+  }'''
+  response = {"respostas": data.get('respostas', [])}
   return jsonify(response)
 
 @app.route('/enviar-resposta', methods=['POST'])
 def post_resposta():
   data = request.json
 
+  prompt1 = ''
+
   retorno = {"return": "Great! Your hit percentage was 100%."}
   response = {"respostas": retorno}
   return jsonify(response)
+
+  def gpt_request() -> dict:
+    # Content
+    link = "https://api.openai.com/v1/chat/completions"
+    modelId = "gpt-4o-mini"
+    maxTokens = 220
+    messages= [
+        {"role": "system", "content": "Say that this is a test"}
+    ]
+    TOKEN = ''
+
+    # Requisition
+    headers = {
+        "Authorization": f"Bearer {TOKEN}",
+        "Content-Type": "application/json"
+    }
+    body = {
+        "model": modelId,
+        "messages": messages,
+        "max_tokens": maxTokens,
+    }
+
+    bodyMessage = json.dumps(body)
+    request = requests.post(link, headers=headers, data=bodyMessage)
+
+    print(request)
+    print(request.content)
 
 if __name__ == '__main__':
   app.run(debug=True)
