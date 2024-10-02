@@ -104,6 +104,7 @@ export class QuestionarioComponent {
 
       axios.post('http://127.0.0.1:5000/enviar-questionario', { respostas })
         .then(response => {
+          console.log("Resposta de nviar-questionario", response);
           this.router.navigate(['/questoes'], { state: { data: response.data } });
         })
         .catch(error => {

@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from "@angular/router";
 import {NgIf} from "@angular/common";
 import axios from "axios";
+import {response} from "express";
 
 @Component({
   selector: 'app-questoes',
@@ -22,7 +23,6 @@ export class QuestoesComponent {
   constructor(private router: Router) {
     const navigation = this.router.getCurrentNavigation();
     this.data = navigation?.extras.state?.['data'];
-    console.log('Dados recebidos:', this.data);
   }
 
   textVisibility(): void {
@@ -32,7 +32,7 @@ export class QuestoesComponent {
   sendResponse(event: Event): void {
     event.preventDefault();
 
-    const response = (event.target as HTMLFormElement).querySelector<HTMLInputElement>('input[name="response"]:checked')?.value;
+    const response = (event.target as HTMLFormElement).querySelector<HTMLTextAreaElement>('textarea[name="response"]')?.value;
 
     axios.post('http://127.0.0.1:5000/enviar-resposta', { response })
       .then(resp => {
@@ -44,5 +44,4 @@ export class QuestoesComponent {
         console.error('Erro ao enviar questionario. ', error);
       });
   }
-
 }

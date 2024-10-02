@@ -2,22 +2,22 @@
   <h3 class="m-3 mt-4">Ótimo!</h3>
   <h3 class="m-3">Agora vamos praticar baseado no seu perfil!</h3>
     <div class="m-3">
-      <h5> {{ data.respostas.titleText }} </h5>
-      {{ data.respostas.text }}
+      <h5> {{ data.titleText }} </h5>
+      {{ data.text }}
     </div>
     <div class="formulario mt-4">
       <button class="btn" style="background-color: #ffa1b7" (click)="textVisibility()">Próximo</button>
     </div>
 </div>
 
-<div class="card bg-white principal p-4" *ngIf="!isVisible && !isReturnVisible && !finalizar">
+<div class="card bg-white principal p-4">
   <form (submit)="sendResponse($event)" class="formulario">
     <div class="m-3 mt-4">
       <h5> Now, answer the question about the text: </h5>
 
       <div class="form-group mt-4 formulario">
-        <label class="text-center" for="response">{{ data.respostas.question }}</label>
-        <textarea type="text" id="response" class="form-control mt-2" rows="3"></textarea>
+        <label class="text-center" for="response">{{ data.question }}</label>
+        <textarea name="response" id="response" class="form-control mt-2" rows="3"></textarea>
       </div>
     </div>
     <div class="formulario mt-4">

@@ -1,9 +1,10 @@
 from flask import Flask, jsonify, request
-import requests, os
+import requests, json
 from flask_cors import CORS
 
 app = Flask(__name__)
 CORS (app)
+aluno = None
 
 class Aluno:
   def __init__(self, nome: str, idade: str, interesses: str, habilidade: str, habilidades_atuais: list) -> None:
@@ -12,63 +13,69 @@ class Aluno:
     self.interesses: str = interesses
     self.habilidade: str = habilidade
     self.habilidades_atuais: list = habilidades_atuais
+    self.gpt: dict = {
+      'introdução': '',
+      'exercício': '',
+      'resposta': ''
+    }
 
 @app.route('/')
 def index():
-  return "Backend is running!"
+    return "Backend is running!"
 
 @app.route('/enviar-questionario', methods=['POST'])
 def post_questionario():
-  data = request.json
-  '''res = data.get('respostas', [])
+    global aluno
 
-  aluno = Aluno(res['name'], res['age'], res['interests'], res['ability'], res['currentAbilities'])
-  prompt = f'Imagine que você é um professor de inglês e escreverá uma questão para um alunx que se chama {aluno.nome}, de {aluno.age} anos, que se interessa por {aluno.interests}, deseja focar em aprender {aluno.ability} e já domina {aluno.currentAbilities}.'
+    # Recebendo dados
+    data = request.json
+    res = data.get('respostas', [])
+    aluno = Aluno(res['name'], res['age'], res['interests'], res['ability'], res['currentAbilities'])
 
-  LIGAR COM GPT e passar o prompt
+    # Enviando requisição
+    aluno.gpt['introdução'] = f'Imagine que você é um professor de inglês e escreverá uma questão para um alunx que se chama {aluno.nome}, de {aluno.idade} anos, que se interessa por {aluno.interesses}, deseja focar em aprender {aluno.habilidade} e já domina {aluno.habilidades_atuais}.'
+    prompt = 'Com base nesse aluno, escreva uma história em inglês referente ao perfil do usuário para ensino de inglês e formule uma questão sobre esse texto de forma que o aluno possa responder com suas palavras. O formato da resposta deve ser um json com os campos: "titleText", "text", and "question" (o conteúdo é apenas um exemplo):\
+          {\
+            "titleText": "Exploring the World Through Travel and Conversation.",\
+            "text": "Traveling is one of the most enriching experiences you can have. At 25, you’ve likely already seen a few places, but the world is vast and full of wonders waiting to be explored...",\
+            "question": "Why is enhancing conversation skills important for someone who enjoys traveling?"\
+          }'
+    content = aluno.gpt['introdução'] + prompt
 
-  response = {'question': 'retorno do gpt'}
+    response = gpt_request(content)
+    texto_recebido = response.replace('```json', '').replace('```', '').strip()
+    texto_recebido_tratado = texto_recebido.replace("\n", "").replace("  ", " ")
 
-  respostas = {
-    "titleText": "Exploring the World Through Travel and Conversation.",
-    "text": ("Traveling is one of the most enriching experiences you can have. At 25, you’ve likely already seen "
-             "a few places, but the world is vast and full of wonders waiting to be explored. As someone with"
-             " intermediate English skills, you’re already equipped to navigate through many countries where "
-             "English is spoken. However, to truly immerse yourself in different cultures, enhancing your "
-             "conversation skills will be crucial. Imagine you’re in a bustling market in Bangkok, trying to "
-             "bargain for a unique souvenir. The ability to converse fluently in English could help you not only "
-             "get the best price but also learn the story behind that item, perhaps even making a new friend along "
-             "the way. Or picture yourself in Paris, striking up a conversation with fellow travelers at a café."
-             " Good conversation skills can turn a simple chat into a deep exchange of ideas and experiences. To "
-             "improve your English for these situations, focus on practicing dialogues related to travel. Think"
-             " about scenarios like asking for directions, checking into a hotel, or discussing travel plans with "
-             "other tourists. Engage in conversations that challenge your vocabulary and force you to think on your"
-             " feet. The more you practice, the more natural these interactions will become. In summary, as you "
-             "continue your journey to improve your English, remember that every conversation is a step closer to "
-             "mastering the language. With your passion for travel, each new interaction will not only enhance your"
-             " language skills but also deepen your understanding of the world."),
-    "question": "Why is enhancing conversation skills important for someone who enjoys traveling?"
-  }'''
-  response = {"respostas": data.get('respostas', [])}
-  return jsonify(response)
+    print(texto_recebido_tratado)
+    return texto_recebido_tratado
 
 @app.route('/enviar-resposta', methods=['POST'])
 def post_resposta():
-  data = request.json
+    data = request.json
+    res = data.get('response', [])
 
-  prompt1 = ''
+    aluno.gpt['resposta'] = res
+    prompt = f' Imagine que voce é um professor de ingles e analise o texto a seguir e a resposta do aluno para este texto, após isso informe um feedback, com base no objetivo do aluno, {aluno.habilidade}, em formato de texto contendo a porcentagem de acertos e como pontos onde esse aluno poderia melhorar. O formato da resposta deve ser apenas um texto contendo todo o feedback. Texto:'
 
-  retorno = {"return": "Great! Your hit percentage was 100%."}
-  response = {"respostas": retorno}
-  return jsonify(response)
+    print(aluno.gpt)
 
-  def gpt_request() -> dict:
+    content = aluno.gpt['introdução'] + prompt + aluno.gpt['exercício'] + ' Resposta do usuário: ' + aluno.gpt['resposta']
+
+    response = {
+      'respostas': {
+        'return': gpt_request(content)
+      }
+    }
+
+    return jsonify(response)
+
+def gpt_request(prompt: str):
     # Content
     link = "https://api.openai.com/v1/chat/completions"
     modelId = "gpt-4o-mini"
     maxTokens = 220
     messages= [
-        {"role": "system", "content": "Say that this is a test"}
+        {"role": "user", "content": prompt}
     ]
     TOKEN = ''
 
@@ -84,10 +91,18 @@ def post_resposta():
     }
 
     bodyMessage = json.dumps(body)
-    request = requests.post(link, headers=headers, data=bodyMessage)
+    response = requests.post(link, headers=headers, data=bodyMessage)
 
-    print(request)
-    print(request.content)
+    json_response = response.json()
+
+    # Verificando se 'choices' existe na resposta
+    if 'choices' in json_response and len(json_response['choices']) > 0:
+        # Retornando o conteúdo correto
+        return json_response['choices'][0]['message']['content']
+
+    else:
+        print("A resposta não contém o formato esperado.")
+        return None
 
 if __name__ == '__main__':
-  app.run(debug=True)
+    app.run(debug=True)
