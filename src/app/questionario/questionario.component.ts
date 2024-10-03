@@ -21,6 +21,7 @@ export class QuestionarioComponent {
   ability: string | undefined;
   currentAbilities: string[] = [];
   errorMessage: string | null = null;
+  isLoading: boolean = false;
 
   constructor(private router: Router) { }
 
@@ -30,7 +31,6 @@ export class QuestionarioComponent {
 
     const form = (event.target as HTMLElement).closest('form');
 
-    // Validações para cada pergunta
     if (this.currentQuestionIndex === 0) {
       this.name = form?.querySelector<HTMLInputElement>('#name')?.value || '';
       if (!this.name) {
@@ -91,6 +91,7 @@ export class QuestionarioComponent {
 
   sendQuestions(event: Event): void {
     event.preventDefault();
+    this.isLoading = true;
 
     if (this.currentQuestionIndex === this.totalQuestions - 1 ) {
 
@@ -104,10 +105,11 @@ export class QuestionarioComponent {
 
       axios.post('http://127.0.0.1:5000/enviar-questionario', { respostas })
         .then(response => {
-          console.log("Resposta de nviar-questionario", response);
+          this.isLoading = false;
           this.router.navigate(['/questoes'], { state: { data: response.data } });
         })
         .catch(error => {
+          this.isLoading = false;
           console.error('Erro ao enviar questionário. ', error);
         });
     }
