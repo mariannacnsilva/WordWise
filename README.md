@@ -5,6 +5,7 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 2. pipenv install
 3. pip install flask
 4. pip install flask-cors
+5. pip install python-dotenv
 5. npm install
 
 ## Development server
@@ -13,7 +14,9 @@ Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The appli
 
 ## Development API
 
-Run `python app.py` to start the API. Remember to change the IP address in the routes.
+Remember to change the API key for chatGPT ind your .env .
+
+Run `python app.py` to start the API.
 
 
 ## Code scaffolding

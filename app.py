@@ -1,10 +1,13 @@
 from flask import Flask, jsonify, request
-import requests, json
+import requests, json, os
 from flask_cors import CORS
+from dotenv import load_dotenv
 
 app = Flask(__name__)
 CORS (app)
 aluno = None
+load_dotenv()
+openai_api_key = os.getenv('OPENAI_API_KEY')
 
 class Aluno:
   def __init__(self, nome: str, idade: str, interesses: str, habilidade: str, habilidades_atuais: list) -> None:
@@ -77,7 +80,7 @@ def gpt_request(prompt: str):
     messages= [
         {"role": "user", "content": prompt}
     ]
-    TOKEN = ''
+    TOKEN = openai_api_key
 
     # Requisition
     headers = {
