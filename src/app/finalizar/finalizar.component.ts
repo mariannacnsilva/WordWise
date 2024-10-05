@@ -24,7 +24,7 @@ export class FinalizarComponent {
   }
 
   returnQuestion() {
-    this.router.navigate(['/questoes']);
+    this.router.navigate(['/questoes'], { state: { data: this.data } });
   }
 
 }

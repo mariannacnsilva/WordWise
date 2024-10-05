@@ -22,6 +22,7 @@ export class QuestoesComponent {
   constructor(private router: Router) {
     const navigation = this.router.getCurrentNavigation();
     this.data = navigation?.extras.state?.['data'];
+    console.log('Dados recebidos 1:', this.data);
   }
 
   sendResponse(event: Event): void {
@@ -39,8 +40,8 @@ export class QuestoesComponent {
     axios.post('http://127.0.0.1:5000/enviar-resposta', { response })
       .then(resp => {
         this.isLoading = false;
-        this.return = resp.data.respostas.return;
-        this.router.navigate(['/finalizar'], { state: { data: resp.data.respostas.return } });
+        this.return = resp.data.return;
+        this.router.navigate(['/finalizar'], { state: { data: resp.data } });
       })
       .catch(error => {
         this.isLoading = false;

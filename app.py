@@ -58,19 +58,16 @@ def post_resposta():
     res = data.get('response', [])
 
     aluno.gpt['resposta'] = res
-    prompt = f' Imagine que voce é um professor de ingles e analise o texto a seguir e a resposta do aluno para este texto, após isso informe um feedback, com base no objetivo do aluno, {aluno.habilidade}, em formato de texto contendo a porcentagem de acertos e como pontos onde esse aluno poderia melhorar. O formato da resposta deve ser apenas um texto contendo todo o feedback. Texto:'
-
-    print(aluno.gpt)
+    prompt = f''' Imagine que você é um professor de inglês e analise o texto a seguir e a resposta do aluno para este texto. Após isso, informe um feedback com base no objetivo do aluno, {aluno.habilidade}, em formato de texto contendo a porcentagem de acertos e os pontos onde esse aluno poderia melhorar. Essa resposta deve estar contida em 'return'. Além disso, com base nesse aluno, escreva uma história em inglês, referente ao perfil do usuário e resposta da pergunta anterior, para ensino de inglês e formule uma questão sobre esse texto de forma que o aluno possa responder com suas palavras. O formato da resposta deve ser um json com os campos: "titleText", "text", "question" and "return". Texto:'''
 
     content = aluno.gpt['introdução'] + prompt + aluno.gpt['exercício'] + ' Resposta do usuário: ' + aluno.gpt['resposta']
 
-    response = {
-      'respostas': {
-        'return': gpt_request(content)
-      }
-    }
+    response = gpt_request(content)
+    texto_recebido = response.replace('```json', '').replace('```', '').strip()
+    texto_recebido_tratado = texto_recebido.replace("\n", "").replace("  ", " ")
 
-    return jsonify(response)
+    print("enviar-resposta retorno:", texto_recebido_tratado)
+    return texto_recebido_tratado
 
 def gpt_request(prompt: str):
     # Content

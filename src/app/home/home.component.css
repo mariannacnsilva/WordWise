@@ -1,15 +1,43 @@
+body, html {
+  margin: 0;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f0f0f0; /* Ajusta a cor de fundo geral */
+}
+
 .principal {
-  margin-left: 100px;
-  margin-right: 100px;
+  height: 500px;
+  margin-left: 23%;
+  margin-right: 23%;
   margin-top: 30px;
-  margin-bottom: 30px;
+  padding: 30px;
   border-radius: 20px;
+  background-image: url('../../assets/img.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  position: relative;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Adiciona sombra para dar destaque */
   display: grid;
   justify-content: center;
   justify-items: center;
 }
 
-.formulario {
-  display: grid;
-  justify-content: center;
+.principal::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.65); /* Fundo branco semi-transparente */
+  border-radius: 20px; /* Manter o mesmo border-radius */
+  z-index: 1;
+}
+
+.principal h2, .principal .text-center, .principal .btn {
+  position: relative;
+  z-index: 2; /* Certifica-se de que o conteúdo fique acima do fundo opaco */
 }
