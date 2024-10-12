@@ -1,12 +1,13 @@
 <div class="card bg-white principal p-4">
   <h3 class="m-3 mt-4">Ótimo!</h3>
   <h3 class="m-3">Agora vamos praticar baseado no seu perfil!</h3>
-    <div class="m-3 text-center">
-      <h5 class="text-center"> {{ data.titleText }} </h5>
-      {{ data.text }}
-    </div>
+  <div class="m-3 text-center">
+    <h5 class="text-center"> {{ data.titleText }} </h5>
+    {{ data.text }}
+  </div>
   <form (submit)="sendResponse($event)" class="formulario">
     <div class="m-3 mt-4">
+      <img [src]="data.imageUrl" alt="Ilustração" style="height: 500px">
       <div class="form-group mt-4 formulario">
         <label class="text-center" for="response">{{ data.question }}</label>
         <textarea name="response" id="response" class="form-control mt-2" rows="3"></textarea>
